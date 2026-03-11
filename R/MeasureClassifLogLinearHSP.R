@@ -11,8 +11,10 @@ LogLinearHSP <- function(pred_tensor, label_tensor, margin){
     neg_const = torch::torch_where(is_positive, 0, 1)
     pos_lin = pos_const*pred_tensor
     pos_m = pos_const*margin
-    sorted_indices = torch::torch_argsort(pred_tensor+neg_const*(
-        margin-torch::torch_finfo(pred_tensor$dtype)$eps))
+    secondary_indices<-torch::torch_sort(pos_const, stable = TRUE)[[2]]
+    reordered_tensor<-(pred_tensor+neg_const*margin)[secondary_indices]
+    primary_indices<-torch::torch_sort(reordered_tensor,stable=TRUE)[[2]]
+    sorted_indices<-secondary_indices[primary_indices]
     coeff_A = pos_const[sorted_indices]$cumsum(dim=1)
     coeff_B = (2*(pos_m-pos_lin))[sorted_indices]$cumsum(dim=1)
     coeff_C = ((pos_m-pos_lin)^2)[sorted_indices]$cumsum(dim=1)
