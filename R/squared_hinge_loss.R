@@ -41,3 +41,14 @@ nn_squared_hinge_loss <- torch::nn_module(
     loss_tensor
   }
 )
+
+torch_loss_sq_hinge_loglinear <- function() {
+  mlr3torch::TorchLoss$new(
+    torch_loss = nn_squared_hinge_loss,
+    task_types = "classif",
+    id = "sq_hinge_loglinear",
+    label = "Log-linear squared hinge loss",
+    packages = "mlr3torchAUM",
+    man = "mlr3torchAUM::nn_squared_hinge_loss"
+  )
+}
