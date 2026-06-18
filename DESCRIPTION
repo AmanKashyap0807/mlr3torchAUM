@@ -27,5 +27,6 @@ Suggests:
     scales,
     atime,
     future, future.apply,
-    litedown
+    litedown,
+    directlabels
 VignetteBuilder: knitr
